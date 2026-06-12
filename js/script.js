@@ -1,47 +1,41 @@
- // Intersection Observer setup
-        const section = document.querySelector("#animatedSection");
-        const boxes = document.querySelectorAll(".skills-image");
+// Skills animation on scroll
+const skillsSection = document.querySelector("#animatedSection");
+const skillCards = document.querySelectorAll(".skill-card");
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    boxes.forEach(box => box.classList.add("active"));
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(section);
-
-//Services
-
-window.addEventListener("scroll", function () {
-  let boxes = document.querySelectorAll(".animation");
-  boxes.forEach((box, index) => {
-    let boxPosition = box.getBoundingClientRect().top;
-    let screenHeight = window.innerHeight;
-
-    if (boxPosition < screenHeight - 100) {
-      // ek ek karke girne ka delay
-      setTimeout(() => {
-        box.classList.add("show");
-      }, index * 300); // 0.4s gap har box ke liye
-    }
-  });
-});
-
- // Intersection Observer for scroll animation
-        const boxe = document.querySelectorAll('.timeline-box');
-        const observerr = new IntersectionObserver(entries => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    // sequential delay for each box
-                    setTimeout(() => {
-                        entry.target.classList.add('show');
-                    }, index * 400); // 400ms gap between each box
-                }
-            });
-        }, { threshold: 0.2 });
-
-        boxe.forEach(box => {
-            observerr.observe(box);
+if (skillsSection) {
+    const skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                skillCards.forEach((card, i) => {
+                    setTimeout(() => card.classList.add("active"), i * 100);
+                });
+            }
         });
+    }, { threshold: 0.1 });
+    skillObserver.observe(skillsSection);
+}
+
+// Education timeline animation
+const timelineBoxes = document.querySelectorAll('.timeline-box');
+const timelineObserver = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('show'), index * 300);
+        }
+    });
+}, { threshold: 0.2 });
+timelineBoxes.forEach(box => timelineObserver.observe(box));
+
+// General scroll animations
+function checkAnimations() {
+    const elements = document.querySelectorAll(".animation");
+    elements.forEach((el, i) => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 80) {
+            setTimeout(() => el.classList.add("show"), i * 150);
+        }
+    });
+}
+
+window.addEventListener("scroll", checkAnimations);
+window.addEventListener("load", checkAnimations);
